@@ -4,7 +4,7 @@ import logger from 'morgan';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { corsOptions } from './config/serverConfig';
-import swaggerUi from 'swagger-ui-express';
+import { serve, setup } from 'swagger-ui-express';
 import { swaggerDocument } from './openApi/swagger';
 import Routes from './routes/routes';
 import express from 'express';
@@ -16,6 +16,8 @@ import {
     localLoginStrategy
 } from './middleware/passport/strategies';
 
+import swaggerJSDoc from 'swagger-jsdoc';
+
 const envFile = 'src/.env';
 
 // tslint:disable-next-line:class-name
@@ -23,25 +25,30 @@ class _Express {
     get app(): any {
         return this._app;
     }
+
     private _app: any;
 
     private expressWs: any;
     private router: any;
 
     // tslint:disable-next-line:no-shadowed-variable no-empty
-    constructor(express: any) {
+    constructor() {
     }
 
     // tslint:disable-next-line:no-shadowed-variable
-    public async bootExpress(express: any) {
+    public async boot() {
         await this.connectToMongo();
-        this._app = express();
-        this.setWebSocketServer();
+        this.getExpress();
         this.setMiddleware();
+        this.setWebSocketServer();
         this.setPassport();
         this.setStaticFiles();
         this.setRoutes();
         this.setDocumenation();
+    }
+
+    private getExpress() {
+        this._app = express();
     }
 
     static setEnv() {
@@ -107,7 +114,8 @@ class _Express {
     }
 
     private setDocumenation() {
-        this._app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        const specs = swaggerJSDoc(swaggerDocument);
+        this._app.use('/docs', serve, setup(specs, {explorer: true}));
     }
 
     private setWebSocketServer() {

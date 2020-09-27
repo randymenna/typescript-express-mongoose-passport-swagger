@@ -1,5 +1,24 @@
-import { User } from '../../../api/user/user.model'
-import argon2 from 'argon2';
+import { User } from '../../../api/user/user.model';
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      LocalLoginRequestBody:
+ *        type: object
+ *        required:
+ *          - email
+ *          - password
+ *        properties:
+ *          email:
+ *            type: string
+ *            format: email
+ *          password:
+ *            type: string
+ *        example:
+ *           email: barney@bedrock.com
+ *           password: secretPasswod
+ */
 
 export const localLogin = async (email: string, password: string, done: Function) => {
     try {
@@ -8,9 +27,8 @@ export const localLogin = async (email: string, password: string, done: Function
             return done(null, false, {message: 'Incorrect username.'});
         }
         // @ts-ignore
-        const correctPassword = await argon2.verify(user.password, password);
-
-        if (!correctPassword) {
+        const storedPassword = await user.password;
+        if (!(storedPassword === password)) {
             return done(null, false, {message: 'Incorrect password.'});
         }
         return done(null, user);
@@ -18,4 +36,4 @@ export const localLogin = async (email: string, password: string, done: Function
     catch (err) {
         return done(err);
     }
-}
+};

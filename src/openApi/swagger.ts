@@ -1,30 +1,38 @@
-import { getExample } from './example.swagger';
+import { ApiKey } from 'src/api/apiKey/apiKey.model';
 
 export const swaggerDocument = {
-    openapi: '3.0.1',
-    info: {
-        version: '1.0.0',
-        title: 'Flock API',
-        description: 'Flock of whatever Tracking API',
-        termsOfService: 'free for now',
-        contact: {
-            name: 'Randy Menna',
-            email: 'randy@newportave.com',
-            url: 'http://newportave.com'
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Sessionless API Server',
+            version: '1.0.0',
+            description:
+                'A skeleton sessionless API server, integrated to mongo and passport',
+            license: {
+                name: 'MIT',
+                url: 'https://choosealicense.com/licenses/mit/'
+            },
+            contact: {
+                name: 'Newport Group',
+                url: 'https://newportave.com',
+                email: 'Info@NewportAve.com'
+            }
         },
-        license: {
-            name: 'apache 2.0',
-            url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-        }
+        servers: [
+            {
+                url: 'http://localhost:3020/api/v1'
+            }
+        ],
+        tags: [
+            {
+                name: 'ApiKey',
+                description: 'Manage ApiKeys for access to this server'
+            },
+            {
+                name: 'User',
+                description: 'Manage Users of this service'
+            }
+        ]
     },
-    tags: [
-        {
-            name: 'Example'
-        }
-    ],
-    paths: {
-        '/api/v1/examples': {
-            'get': getExample
-        }
-    }
+    apis: ['./src/api/**/*.ts']
 };

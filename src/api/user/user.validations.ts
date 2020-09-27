@@ -1,5 +1,5 @@
 import { body, param } from 'express-validator';
-import { emailExists, emailNotExist, validateRole } from '../helpers/validatorHelpers';
+import { emailExists, emailNotExist } from '../helpers/validatorHelpers';
 
 export const validationRules = (method: string): any[] => {
     switch (method) {
@@ -36,22 +36,10 @@ export const validationRules = (method: string): any[] => {
                     .normalizeEmail()
                     .isEmail()
                     .withMessage('not valid email'),
-                body('app')
-                    .exists()
-                    .withMessage('app missing')
-                    .notEmpty()
-                    .withMessage('app is empty'),
-                body('role')
-                    .exists()
-                    .withMessage('role missing')
-                    .notEmpty()
-                    .withMessage('role is empty')
-                    .custom(validateRole)
-                    .withMessage('invalid role'),
             ];
         case 'deleteUser':
             return [
-                body('email')
+                param('email')
                     .exists()
                     .withMessage('email missing')
                     .notEmpty()
@@ -60,12 +48,20 @@ export const validationRules = (method: string): any[] => {
                     .isEmail()
                     .withMessage('not valid email')
                     .custom(emailExists)
-                    .withMessage('email not found'),
-                body('app')
+                    .withMessage('user not found'),
+            ];
+        case 'getUser':
+            return [
+                param('email')
                     .exists()
-                    .withMessage('app missing')
+                    .withMessage('email missing')
                     .notEmpty()
-                    .withMessage('app is empty'),
+                    .withMessage('email is empty')
+                    .normalizeEmail()
+                    .isEmail()
+                    .withMessage('not valid email')
+                    .custom(emailExists)
+                    .withMessage('user not found'),
             ];
         default:
             return [];

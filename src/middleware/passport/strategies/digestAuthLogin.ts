@@ -1,13 +1,14 @@
-import { User } from '../../../api/user/user.model'
+import { User } from '../../../api/user/user.model';
 
 export const digestAuthLogin = async (username: string, password: string, done: Function) => {
     try {
         const user = await User.findOne({username});
-        if (!user) {
-            return done(null, false, {message: 'Incorrect username.'});
-        }
         // @ts-ignore
-        done(null, user, user.password);
+        const storedPassword = await user.password;
+        if (!(storedPassword === password)) {
+            return done(null, false, {message: 'Incorrect password.'});
+        }
+        return done(null, user);
     }
     catch (err) {
         return done(err);

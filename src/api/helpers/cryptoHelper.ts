@@ -8,8 +8,15 @@ export const encrypt = (text: string) => {
 }
 
 export const decrypt = (text: string) => {
-    const decipher = crypto.createDecipheriv('aes-256-cbc',Buffer.from(process.env.ENCRYPTION_KEY), process.env.IV)
-    let dec = decipher.update(text,'hex','utf8')
-    dec += decipher.final('utf8');
-    return dec;
+    let clearText;
+    try {
+        const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPTION_KEY), process.env.IV);
+        clearText = decipher.update(text, 'hex', 'utf8');
+        clearText += decipher.final('utf8');
+    }
+    catch (e) {
+        console.log('decrypt error', e);
+        return text;
+    }
+    return clearText;
 }

@@ -1,5 +1,6 @@
 import { ROLES } from '../../config/types';
 import { User } from '../user/user.model';
+import { ApiKey } from '../apiKey/apiKey.model';
 
 // fail if the email name is in use
 export const emailNotExist = (email: string) => {
@@ -24,5 +25,12 @@ export const validateRole = (maybeRole: string) => {
         } else {
             reject();
         }
+    });
+};
+
+export const keyExists = (key: string) => {
+    return new Promise(async (resolve, reject) => {
+        const apiKey = await ApiKey.findOne({key});
+        apiKey ? resolve() : reject();
     });
 };

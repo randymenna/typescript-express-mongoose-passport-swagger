@@ -12,11 +12,12 @@ export const filterUsersForApp = async (app: string) => {
     return filteredUsers;
 };
 
-export const createUser = async (email: string, password: string, name: string ) => {
+export const createUser = async (email: string, password: string, name: string, isSuperUser: boolean) => {
     const user = {
         email,
         password,
         name,
+        isSuperUser,
     };
 
     try {

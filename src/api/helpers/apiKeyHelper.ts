@@ -5,11 +5,6 @@ export const createApiKey = async (key: string, email: string ) => {
         key,
         email,
     };
-    try {
-        const newApiKey = new ApiKey(apiKey);
-        return await newApiKey.save();
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+    const newApiKey = new ApiKey(apiKey);
+    return await newApiKey.save();
 };
