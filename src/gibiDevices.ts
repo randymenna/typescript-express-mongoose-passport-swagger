@@ -1,3 +1,41 @@
+
+const raw = () => {
+    var rawReports = []; // APV: ADDED HACK
+    rawReports[0]  = ""; // APV: ADDED HACK
+    rawReports[1]  = message.data.substring(message.data.indexOf('$')+1); // APV: ADDED HACK
+
+    var deviceReports = new Array();
+    // start at the 2nd position in the array, as the first will have a $ only
+    for(var i=1; i < rawReports.length; i++) {
+        var deviceReport = build(rawReports[i]);
+        deviceReports.push(deviceReport);
+    }
+}
+
+const build = (reportFromDevice: string) => {
+
+    var fieldsAndDeviceId = reportFromDevice.split(';');
+
+    var fieldsAsCSV = fieldsAndDeviceId[0];
+    var fields = fieldsAsCSV.split(',');
+
+    var deviceReport = {};
+    var fieldOneSplit = fields[0].split(':');
+    var parseFunction = this.parseFunctionMap[fieldOneSplit[0].trim()];
+    if (parseFunction !== undefined) {
+        deviceReport = parseFunction(fields);
+    }
+    else {
+        deviceReport       = {};
+        deviceReport.type  = fields[0];
+    }
+    deviceReport.deviceId = fieldsAndDeviceId[1].replace(/(\r\n|\n|\r)/gm,"");
+    deviceReport.actualReport = reportFromDevice;
+    deviceReport.systemTimestamp = new Date();
+
+    return deviceReport;
+}
+
 const parseGibiData = (fields) => {
 
     var deviceReport = {};
