@@ -1,7 +1,7 @@
 import express from 'express';
-import * as apiKeyController from './apiKey.controller';
-import { validate } from '../../middleware/validate';
-import { validationRules } from './apiKey.validations';
+import * as apiKeyController from 'src/api/auth/apiKey/apiKey.controller';
+import { validate } from 'src/middleware/validate';
+import { validationRules } from 'src/api/auth/apiKey/apiKey.validations';
 import passport from 'passport';
 
 const router = express.Router();

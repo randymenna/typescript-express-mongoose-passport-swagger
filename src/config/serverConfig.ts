@@ -1,9 +1,13 @@
-export const allowedOrigins = [
-    'https://localhost', // LOCAL
-    // 'https://*.aws.in.here.com', // DEV
-];
+export const allowedOrigins: { [key: string]: string[] } = {
+    local: [
+        'https://localhost',
+    ],
+    test: [
+        'https://test.mydomain.com',
+    ]
+};
 
 export const corsOptions = {
-    origin: allowedOrigins,
+    origin: allowedOrigins.local,
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
 };

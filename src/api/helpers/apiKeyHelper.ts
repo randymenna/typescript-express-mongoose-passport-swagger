@@ -1,4 +1,4 @@
-import { ApiKey } from '../apiKey/apiKey.model';
+import { ApiKey } from '../auth/apiKey/apiKey.model';
 
 export const createApiKey = async (key: string, email: string ) => {
     const apiKey = {

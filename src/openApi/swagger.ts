@@ -1,4 +1,4 @@
-import { ApiKey } from 'src/api/apiKey/apiKey.model';
+import { ApiKey } from 'src/api/auth/apiKey/apiKey.model';
 
 export const swaggerDocument = {
     swaggerDefinition: {

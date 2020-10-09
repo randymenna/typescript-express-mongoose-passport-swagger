@@ -166,7 +166,7 @@ export const updateUser = async (req: express.Request, res: express.Response, ne
         delete updatedUser.email;
 
         const retVal: IMongoWriteResult = await User.update({email}, updatedUser);
-        if (retVal.deletedCount) {
+        if (retVal.nModified) {
             res.status(200).json(retVal);
         } else {
             res.status(417).json({error: 'failed to update user'});

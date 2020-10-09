@@ -1,12 +1,7 @@
-export const echo = (ws: any, req: any) => {
-    ws.on('message', (msg: any) => {
-        ws.send(msg);
-    });
-}
+import { webSocketMessageHandler } from 'src/messageHandlers/webSocketMessageHandler/webSocketMessageHandler';
 
-export const update = (ws: any, req: any) => {
+export const message = (ws: any, req: any) => {
     ws.on('message', (msg: any) => {
-        console.log(req);
-        ws.send(req.params.id);
+        webSocketMessageHandler(msg, req);
     });
-}
+};

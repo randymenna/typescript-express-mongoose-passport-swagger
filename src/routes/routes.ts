@@ -1,8 +1,14 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { WsRouterFn } from '../api/webSockets/webSockets.router';
 import { UserRouter } from '../api/user/user.router';
 import { AuthRouter } from '../api/auth/auth.router';
-import { ApiKeyRouter } from '../api/apiKey/apiKey.router';
+import { ApiKeyRouter } from '../api/auth/apiKey/apiKey.router';
+import { AccountRouter } from 'src/api/account/account.router';
+import { BillingRouter } from 'src/api/billing/billing.router';
+import { GeoFenceRouter } from 'src/api/geoFence/geoFence.router';
+import { ItemRouter } from 'src/api/item/item.router';
+import { LocationRouter } from 'src/api/location/location.router';
+import { SubscriptionRouter } from 'src/api/subscription/subscription.router';
 
 export default class Routes {
     public router: Router;
@@ -14,9 +20,16 @@ export default class Routes {
     }
 
     private setAllRoutes(router: any) {
-        this.app.use('/api/v1', UserRouter);
-        this.app.use('/api/v1', AuthRouter);
-        this.app.use('/api/v1', ApiKeyRouter);
+        const baseRoute = '/api/vi';
+        this.app.use(baseRoute, UserRouter);
+        this.app.use(baseRoute, AuthRouter);
+        this.app.use(baseRoute, ApiKeyRouter);
+        this.app.use(baseRoute, AccountRouter);
+        this.app.use(baseRoute, BillingRouter);
+        this.app.use(baseRoute, GeoFenceRouter);
+        this.app.use(baseRoute, ItemRouter);
+        this.app.use(baseRoute, LocationRouter);
+        this.app.use(baseRoute, SubscriptionRouter);
         this.app.use('/ws', WsRouterFn(router));
 
         this.setMainRoute();

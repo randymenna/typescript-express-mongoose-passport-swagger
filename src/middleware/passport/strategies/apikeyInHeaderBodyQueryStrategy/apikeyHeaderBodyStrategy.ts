@@ -1,5 +1,5 @@
 import passportCustom from 'passport-custom';
-import { ApiKey } from '../../../../api/apiKey/apiKey.model';
+import { ApiKey } from '../../../../api/auth/apiKey/apiKey.model';
 import { User } from '../../../../api/user/user.model';
 
 const CustomStrategy = passportCustom.Strategy;

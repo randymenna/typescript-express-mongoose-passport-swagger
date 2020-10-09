@@ -1,8 +1,8 @@
 import express from 'express';
 import uuidAPIKey from 'uuid-apikey';
-import { createApiKey, } from '../helpers/apiKeyHelper';
-import { ApiKey } from './apiKey.model';
-import { IMongoWriteResult } from '../helpers/types';
+import { createApiKey, } from 'src/api/helpers/apiKeyHelper';
+import { ApiKey } from 'src/api/auth/apiKey/apiKey.model';
+import { IMongoWriteResult } from 'src/api/helpers/types';
 
 /**
  * @swagger

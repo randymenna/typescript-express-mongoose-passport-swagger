@@ -1,25 +1,28 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist",
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "./*",
-                "../node_modules/*"
-            ],
-            "src/*": [
-                "./src/*"
-            ],
-            "@passport/*": ["./.src/middleware/passport/strategies/*"]
-        },
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "target": "es6",
+      "noImplicitAny": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "dist",
+      "baseUrl": ".",
+      "importsNotUsedAsValues": "preserve",
+      "paths": {
+        "*": [
+          "./*",
+          "../node_modules/*"
+        ],
+        "src/*": [
+          "./src/*"
+        ],
+        "@passport/*": [
+          "./.src/middleware/passport/strategies/*"
+        ]
+      },
         "lib": [
-            "es2015"
+          "es6"
         ]
     },
     "include": [

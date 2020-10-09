@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import * as authController from './auth.controller';
-import { validationRules } from '../../api/apiKey/apiKey.validations';
+import { validationRules } from './apiKey/apiKey.validations';
 import { validate } from '../../middleware/validate';
 import { impersonate } from '../../middleware/impersonate';
 

@@ -1,6 +1,6 @@
-import { ROLES } from '../../config/types';
+import { Models, ROLES } from '../../config/types';
 import { User } from '../user/user.model';
-import { ApiKey } from '../apiKey/apiKey.model';
+import { ApiKey } from '../auth/apiKey/apiKey.model';
 
 // fail if the email name is in use
 export const emailNotExist = (email: string) => {
@@ -32,5 +32,12 @@ export const keyExists = (key: string) => {
     return new Promise(async (resolve, reject) => {
         const apiKey = await ApiKey.findOne({key});
         apiKey ? resolve() : reject();
+    });
+};
+
+export const collectionExists = (collection: string) => {
+    return new Promise(async (resolve, reject) => {
+        const exists = Models[collection] !== undefined;
+        exists ? resolve() : reject();
     });
 };

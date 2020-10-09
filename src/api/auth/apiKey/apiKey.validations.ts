@@ -1,5 +1,5 @@
 import { param } from 'express-validator';
-import { emailExists, keyExists } from '../helpers/validatorHelpers';
+import { emailExists, keyExists } from '../../helpers/validatorHelpers';
 
 /**
  * @swagger
