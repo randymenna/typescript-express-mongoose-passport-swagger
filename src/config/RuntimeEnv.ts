@@ -1,3 +1,7 @@
+import { initLog } from 'src/logger/loggerService';
+
+initLog();
+
 export class RuntimeEnv {
     static setEnv() {
         process.env.DEPLOY = 'local';

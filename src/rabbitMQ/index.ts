@@ -8,8 +8,8 @@ export const connectToRabbitMQ = async () => {
         return await rabbitMQ.connect();
     }
     catch (e) {
-        console.log('Failed to connect to RabbitMQ');
-        console.log(e.message);
+        console.error('Failed to connect to RabbitMQ');
+        console.error(e.message);
         return null;
     }
 };

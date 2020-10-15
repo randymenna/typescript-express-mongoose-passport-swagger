@@ -7,23 +7,14 @@ import { model, Schema } from 'mongoose';
  *      Account:
  *        type: object
  *        required:
+ *          - owner
+ *          - users
  *          - name
- *          - email
- *          - password
- *        optional:
- *          - isSuperAccount
- *        properties:
- *          name:
- *            type: string
- *          email:
- *            type: string
- *            format: email
- *          password:
- *             type: string
- *             description: encrypted when stored in the database
- *          isSuperAccount:
- *             type: boolean
- *        example:
+ *          - description
+ *          - status
+ *          - billing
+ *          - subscription
+ *          - geoFences
  */
 
 export enum EAccountStatus {

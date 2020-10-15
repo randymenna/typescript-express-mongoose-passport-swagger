@@ -27,10 +27,10 @@ export class RabbitMQ {
         }
         this._broker.on('error', this.rabbitError);
         this._broker.on('blocked', (reason: string, {vhost, connectionUrl}: { vhost: string, connectionUrl: string }) => {
-            console.log(`Vhost: ${vhost} was blocked using connection: ${connectionUrl}. Reason: ${reason}`);
+            console.error(`Vhost: ${vhost} was blocked using connection: ${connectionUrl}. Reason: ${reason}`);
         });
         this._broker.on('unblocked', ({vhost, connectionUrl}: { vhost: string, connectionUrl: string }) => {
-            console.log(`Vhost: ${vhost} was unblocked using connection: ${connectionUrl}.`);
+            console.error(`Vhost: ${vhost} was unblocked using connection: ${connectionUrl}.`);
         });
         return (this._broker != null);
     }

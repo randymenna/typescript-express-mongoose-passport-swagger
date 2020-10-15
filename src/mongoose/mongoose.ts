@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { model, Schema } from 'mongoose';
 
 export const pointSchema = new mongoose.Schema({
     type: {
@@ -11,10 +11,12 @@ export const pointSchema = new mongoose.Schema({
         required: true
     },
     properties: {
-        type: Object,
+        type: Schema.Types.Mixed,
         required: false
     }
 });
+pointSchema.index({'properties.deviceId': 'text'});
+export const Positions = model('Positions', pointSchema);
 
 export const polygonSchema = new mongoose.Schema({
     type: {
@@ -31,6 +33,8 @@ export const polygonSchema = new mongoose.Schema({
         required: false
     }
 });
+polygonSchema.index({'properties.account': 'text'});
+
 
 export const multiPolygonSchema = new mongoose.Schema({
     type: {
@@ -47,6 +51,7 @@ export const multiPolygonSchema = new mongoose.Schema({
         required: false
     }
 });
+multiPolygonSchema.index({'properties.account': 'text'});
 
 export const connectToMongo = () => {
     return new Promise((resolve, reject) => {

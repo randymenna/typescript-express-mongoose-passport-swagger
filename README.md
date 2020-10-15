@@ -2,9 +2,11 @@
 
 This is an extension of the base starter to implement a location api / micro service position processing system
 
-This branch switches to webpack for building, and outputs several node app/micro-services
+This branch 
+* switches to webpack for building, and outputs several node app/micro-services
+* moves the environment from external files to webpack
+* overrides console.log with winston logger
 
-This branch also move the environment from external files to webpack
 
 Inherited from the base it has:
 

@@ -59,6 +59,10 @@ const ItemSchema: Schema = new Schema({
             require: true,
             trim: true,
         },
+        deviceId: {
+            type: String,
+            trim: true,
+        },
         name: {
             type: String,
             required: true,

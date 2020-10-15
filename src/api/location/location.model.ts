@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { pointSchema } from 'src/mongoose/mongoose';
 
 /**
  * @swagger
@@ -8,29 +7,16 @@ import { pointSchema } from 'src/mongoose/mongoose';
  *      Location:
  *        type: object
  *        required:
- *          - name
- *          - email
- *          - password
- *        optional:
- *          - isSuperLocation
- *        properties:
- *          name:
- *            type: string
- *          email:
- *            type: string
- *            format: email
- *          password:
- *             type: string
- *             description: encrypted when stored in the database
- *          isSuperLocation:
- *             type: boolean
- *        example:
+ *          - account
+ *          - item
+ *          - position
+ *          - valid
  */
 
 const LocationSchema: Schema = new Schema({
         account: {
             type: Schema.Types.ObjectId,
-            ref: 'Item',
+            ref: 'Account',
             index: true,
         },
         item: {
@@ -40,15 +26,13 @@ const LocationSchema: Schema = new Schema({
             required: true,
         },
         position: {
-            type: pointSchema,
+            type: Schema.Types.ObjectId,
+            ref: 'Position',
             required: true,
         },
         valid: {
             type: Boolean,
             required: true,
-        },
-        meta: {
-            type: Object,
         },
     },
     {
