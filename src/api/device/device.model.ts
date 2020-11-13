@@ -4,12 +4,13 @@ import { model, Schema } from 'mongoose';
  * @swagger
  *  components:
  *    schemas:
- *      Item:
+ *      Device:
  *        type: object
  *        required:
- *          - name
- *          - email
- *          - password
+ *          - account
+ *          - owner
+ *          - mfg
+ *          - meta
  *        optional:
  *          - isSuperItem
  *        properties:
@@ -28,16 +29,7 @@ import { model, Schema } from 'mongoose';
  *           email: barney@bedrock.com
  *           password: secretPassword
  */
-
-export enum ItemTypesEnum {
-    DOG = 'dog',
-    GOAT = 'goat',
-    PERSON = 'person'
-}
-
-const ItemTypes = Object.values(ItemTypesEnum);
-
-const ItemSchema: Schema = new Schema({
+const DeviceSchema: Schema = new Schema({
         account: {
             type: Schema.Types.ObjectId,
             ref: 'Account',
@@ -48,46 +40,17 @@ const ItemSchema: Schema = new Schema({
             ref: 'User',
             index: true,
         },
-        type: {
+        mfg: {
             type: String,
             required: true,
-            enum: ItemTypes,
-            index: true,
-        },
-        itemId: {
-            type: String,
-            require: true,
-            trim: true,
-        },
-        device: {
-            type: Schema.Types.ObjectId,
-            ref: ' Device',
-            index: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
         },
         meta: {
             type: Schema.Types.Mixed,
         },
-        last10Locations: [{
-            type: Schema.Types.ObjectId,
-            ref: ' Location',
-            index: true,
-        }],
-        geoFences: [{
-            type: Schema.Types.ObjectId,
-            ref: 'GeoFence',
-            required: false,
-        }],
     },
     {
         timestamps: true,
     },
 );
 
-export const Item = model('Item', ItemSchema);
+export const Device = model('Device', DeviceSchema);

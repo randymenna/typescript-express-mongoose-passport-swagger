@@ -39,56 +39,62 @@ export const rabbitConfig = {
                 'queues': {
 
                     // Create a queue processing positions
-                    'location_service:position:report': {
+                    'raw': {
                         'options': {
                             'arguments': {
                                 // Route nacked messages to a service specific dead letter queue
                                 'x-dead-letter-exchange': 'dead_letters',
-                                'x-dead-letter-routing-key': 'location_service.dead_letter'
+                                'x-dead-letter-routing-key': 'raw.dead_letter'
                             }
                         }
                     },
 
-                    // Create a queue for processing position alerts
-                    'notification_service:position:alert': {
+                    'notify': {
                         'options': {
                             'arguments': {
                                 // Route nacked messages to a service specific dead letter queue
                                 'x-dead-letter-exchange': 'dead_letters',
-                                'x-dead-letter-routing-key': 'notification_service.dead_letter'
+                                'x-dead-letter-routing-key': 'notify.dead_letter'
                             }
                         }
                     },
 
-                    // Create a queue for processing sms alerts
-                    'sms_service:position:alert': {
+                    'sms': {
                         'options': {
                             'arguments': {
                                 // Route nacked messages to a service specific dead letter queue
                                 'x-dead-letter-exchange': 'dead_letters',
-                                'x-dead-letter-routing-key': 'sms_service.dead_letter'
+                                'x-dead-letter-routing-key': 'sms.dead_letter'
                             }
                         }
                     },
 
-                    // Create a queue for processing email alerts
-                    'email_service:position:alert': {
+                    'email': {
                         'options': {
                             'arguments': {
                                 // Route nacked messages to a service specific dead letter queue
                                 'x-dead-letter-exchange': 'dead_letters',
-                                'x-dead-letter-routing-key': 'email_service.dead_letter'
+                                'x-dead-letter-routing-key': 'email.dead_letter'
                             }
                         }
                     },
 
-                    // Create a queue for processing forward messages to devices
-                    'websocket_service:message:forward': {
+                    'socket': {
                         'options': {
                             'arguments': {
                                 // Route nacked messages to a service specific dead letter queue
                                 'x-dead-letter-exchange': 'dead_letters',
-                                'x-dead-letter-routing-key': 'websocket_service.dead_letter'
+                                'x-dead-letter-routing-key': 'socket.dead_letter'
+                            }
+                        }
+                    },
+
+                    'forward': {
+                        'options': {
+                            'arguments': {
+                                // Route nacked messages to a service specific dead letter queue
+                                'x-dead-letter-exchange': 'dead_letters',
+                                'x-dead-letter-routing-key': 'forward.dead_letter'
                             }
                         }
                     },
@@ -105,47 +111,51 @@ export const rabbitConfig = {
                     },
 
                     // Queue for holding dead letters until they can be resolved
-                    'dead_letters:location_service': {},
-                    'dead_letters:notification_service': {},
-                    'dead_letters:sms_service': {},
-                    'dead_letters:email_service': {},
-                    'dead_letters:websocket_service': {},
+                    'dead_letters:raw': {},
+                    'dead_letters:notify': {},
+                    'dead_letters:sms': {},
+                    'dead_letters:email': {},
+                    'dead_letters:socket': {},
+                    'dead_letters:forward': {},
                 },
 
                 // Bind the queues to the exchanges.
                 // A good naming convention for routing keys is producer.entity.event
                 'bindings': {
                     // Route service topics to respective queue
-                    'service[device_gateway.position.#] -> location_service:position:report': {},
-                    'service[notification_service.alert.#] -> notification_service:position:alert': {},
-                    'service[sms_service.alert.#] -> sms_service:position:alert': {},
-                    'service[email_service.alert.#] -> email_service:position:alert': {},
-                    'service[websocket_service.message.#] -> websocket_service:message:forward': {},
+                    'service[raw.position.#] -> raw': {},
+                    'service[notify.alert.#] -> notify': {},
+                    'service[sms.message.#] -> sms': {},
+                    'service[email.message.#] -> email': {},
+                    'service[socket.message.#] -> socket': {},
+                    'service[forward.message.#] -> forward': {},
 
                     // Route delayed messages to the 1 minute delay queue
                     'delay[delay.1m] -> delay:1m': {},
 
                     // Route retried messages back to their original queue using the CC routing keys set by Rascal
-                    'retry[device_gateway.position.#] -> location_service:position:report': {},
-                    'retry[notification_service.alert.#] -> notification_service:position:alert': {},
-                    'retry[sms_service.alert.#] -> sms_service:position:alert': {},
-                    'retry[email_service.alert.#] -> email_service:position:alert': {},
-                    'retry[websocket_service.message.#] -> notification_service:position:alert': {},
+                    'retry[raw.position.#] -> raw': {},
+                    'retry[notify.alert.#] -> notify': {},
+                    'retry[sms.message.#] -> sms': {},
+                    'retry[email.message.#] -> email': {},
+                    'retry[socket.message.#] -> socket': {},
+                    'retry[forward.message.#] -> forward': {},
 
                     // Route dead letters the service specific dead letter queue
-                    'dead_letters[location_service.dead_letter] -> dead_letters:location_service': {},
-                    'dead_letters[notification_service.dead_letter] -> dead_letters:notification_service': {},
-                    'dead_letters[sms_service.dead_letter] -> dead_letters:sms_service': {},
-                    'dead_letters[email_service.dead_letter] -> dead_letters:email_service': {},
-                    'dead_letters[websocket_service.dead_letter] -> dead_letters:websocket_service': {},
+                    'dead_letters[raw.dead_letter] -> dead_letters:raw': {},
+                    'dead_letters[notify.dead_letter] -> dead_letters:notify': {},
+                    'dead_letters[sms.dead_letter] -> dead_letters:sms': {},
+                    'dead_letters[email.dead_letter] -> dead_letters:email': {},
+                    'dead_letters[socket.dead_letter] -> dead_letters:socket': {},
+                    'dead_letters[forward.dead_letter] -> dead_letters:forward': {},
                 },
 
                 // Setup subscriptions
                 'subscriptions': {
 
-                    'newPositions': {
+                    'positions': {
                         'vhost': 'tracking-vhost',
-                        'queue': 'location_service:position:report',
+                        'queue': 'raw',
                         'contentType': 'application/json',
                         'redeliveries': {
                             'limit': 5,
@@ -153,9 +163,9 @@ export const rabbitConfig = {
                         }
                     },
 
-                    'alertNotifications': {
+                    'alerts': {
                         'vhost': 'tracking-vhost',
-                        'queue': 'notification_service:position:alert',
+                        'queue': 'notify',
                         'contentType': 'application/json',
                         'redeliveries': {
                             'limit': 5,
@@ -163,9 +173,9 @@ export const rabbitConfig = {
                         }
                     },
 
-                    'smsAlerts': {
+                    'smsMessages': {
                         'vhost': 'tracking-vhost',
-                        'queue': 'sms_service:position:alert',
+                        'queue': 'sms',
                         'contentType': 'application/json',
                         'redeliveries': {
                             'limit': 5,
@@ -173,9 +183,9 @@ export const rabbitConfig = {
                         }
                     },
 
-                    'emailAlerts': {
+                    'emailMessages': {
                         'vhost': 'tracking-vhost',
-                        'queue': 'email_service:position:alert',
+                        'queue': 'email',
                         'contentType': 'application/json',
                         'redeliveries': {
                             'limit': 5,
@@ -185,7 +195,17 @@ export const rabbitConfig = {
 
                     'forwardMessages': {
                         'vhost': 'tracking-vhost',
-                        'queue': 'websocket_service:message:forward',
+                        'queue': 'forward',
+                        'contentType': 'application/json',
+                        'redeliveries': {
+                            'limit': 5,
+                            'counter': 'shared'
+                        }
+                    },
+
+                    'socketMessages': {
+                        'vhost': 'tracking-vhost',
+                        'queue': 'socket',
                         'contentType': 'application/json',
                         'redeliveries': {
                             'limit': 5,
@@ -198,42 +218,42 @@ export const rabbitConfig = {
                 // Setup publications
                 'publications': {
 
-                    'newPosition': {
+                    'positions': {
                         'vhost': 'tracking-vhost',
                         'exchange': 'service',
                         'confirm': true,
                         'timeout': 10000,
-                        'routingKey': 'device_gateway.position.#',
+                        'routingKey': 'raw.position.#',
                         'autoCreated': true,
                         'encryption': 'well-known-v1',
                     },
 
-                    'alertNotification': {
+                    'alerts': {
                         'vhost': 'tracking-vhost',
                         'exchange': 'service',
                         'confirm': true,
                         'timeout': 10000,
-                        'routingKey': 'notification_service.alert.#',
+                        'routingKey': 'notify.alert.#',
                         'autoCreated': true,
                         'encryption': 'well-known-v1',
                     },
 
-                    'smsAlert': {
+                    'smsMessage': {
                         'vhost': 'tracking-vhost',
                         'exchange': 'service',
                         'confirm': true,
                         'timeout': 10000,
-                        'routingKey': 'sms_service.alert.#',
+                        'routingKey': 'sms.message.#',
                         'autoCreated': true,
                         'encryption': 'well-known-v1',
                     },
 
-                    'emailAlert': {
+                    'emailMessage': {
                         'vhost': 'tracking-vhost',
                         'exchange': 'service',
                         'confirm': true,
                         'timeout': 10000,
-                        'routingKey': 'email_service.alert.#',
+                        'routingKey': 'email.message.#',
                         'autoCreated': true,
                         'encryption': 'well-known-v1',
                     },
@@ -243,7 +263,17 @@ export const rabbitConfig = {
                         'exchange': 'service',
                         'confirm': true,
                         'timeout': 10000,
-                        'routingKey': 'websocket_service.message.#',
+                        'routingKey': 'forward.message.#',
+                        'autoCreated': true,
+                        'encryption': 'well-known-v1',
+                    },
+
+                    'socketMessage': {
+                        'vhost': 'tracking-vhost',
+                        'exchange': 'service',
+                        'confirm': true,
+                        'timeout': 10000,
+                        'routingKey': 'socket.message.#',
                         'autoCreated': true,
                         'encryption': 'well-known-v1',
                     },

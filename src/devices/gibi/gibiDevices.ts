@@ -13,7 +13,7 @@ const data = [
     '$LOC: "BG",1,1602226973,+33.838438,-112.079441,0,000.000,000.000,6,15,2F8,01,1,AT&T,2,80;89011702272099365543',
 ];
 
-export const rawMessageToGeoJson = (cmd: string) => {
+export const gibiMessageToGeoJson = (cmd: string) => {
     let position = null;
     const rawMessage = cmd.split(':');
     if (rawMessage.length === 2) {

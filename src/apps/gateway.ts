@@ -3,9 +3,10 @@ import net from 'net';
 import { RuntimeEnv } from 'src/config/RuntimeEnv';
 import { connectToMongo } from 'src/mongoose/mongoose';
 import { connectToRabbitMQ, rabbitMQ } from 'src/rabbitMQ';
-import { isValidGibiCommand } from 'src/devices/gibiDevices';
+import { gibiMessageToGeoJson, isValidGibiCommand } from 'src/devices/gibi/gibiDevices';
+import { Point } from 'src/api/point/point.model';
 
-const GATEWAY_WORKERS = 2;
+const GATEWAY_WORKERS = 1;
 const appName = (process.argv[1].split('/').pop()).split('.').shift();
 let restart = false;
 
@@ -17,17 +18,23 @@ const onConnect = (socket: any) => {
     socket.setEncoding('ascii');
     socket.setTimeout(120000);
 
-    socket.on('data', (data: any) => {
-        if (isValidGibiCommand(data)) {
-            const payload: any = {
-                type: 'gibi',
-                raw: data
-            };
-            rabbitMQ.publish('raw', payload);
-        } else {
-            console.error('gateway(): Bad Data: ' + data);
+    socket.on('data', async (data: any) => {
+        try {
+            if (isValidGibiCommand(data)) {
+                const geoJson = gibiMessageToGeoJson(data);
+                let point = new Point({...geoJson});
+                point = await point.save();
+                rabbitMQ.publish('raw', point);
+            } else {
+                console.error('gateway(): Bad Data: ' + data);
+            }
         }
-        socket.destroy();
+        catch (e) {
+            console.error('gateway():', e);
+        }
+        finally {
+            socket.destroy();
+        }
     });
 
     socket.on('timeout', () => {

@@ -30,6 +30,10 @@ export class RuntimeEnv {
             console.error('GATEWAY_PORT not set');
             retVal = false;
         }
+        if (!process.env.COOKIE_PASSWORD) {
+            console.error('COOKIE_PASSWORD not set');
+            retVal = false;
+        }
         if (!process.env.ENCRYPTION_KEY) {
             console.error('ENCRYPTION_KEY not set');
             retVal = false;

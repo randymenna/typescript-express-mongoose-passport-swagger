@@ -21,9 +21,10 @@
           "./.src/middleware/passport/strategies/*"
         ]
       },
-        "lib": [
-          "es6"
-        ]
+      "lib": [
+        "es6"
+      ],
+      "jsx": "react"
     },
     "include": [
         "src/**/*"

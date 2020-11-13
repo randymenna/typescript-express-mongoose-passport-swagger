@@ -22,7 +22,7 @@ module.exports = env => {
             filename: '[name].js'
         },
         resolve: {
-            extensions: ['.ts'],
+            extensions: ['.ts',],
             alias: {
                 'src': path.resolve('./src'),
             },
@@ -33,7 +33,8 @@ module.exports = env => {
                     test: /\.ts$/,
                     use: [
                         'ts-loader',
-                    ]
+                    ],
+                    exclude: /node_modules/,
                 },
             ],
         },
@@ -53,6 +54,7 @@ module.exports = env => {
                         ENCRYPTION_KEY: '0123456789abcdefghiklmnopqrstuvx',
                         IV: '0123456789abcdef',
                         GATEWAY_PORT: '8099',
+                        COOKIE_PASSWORD: 'some-password-used-to-secure-the-admin-cookie',
                     }
                     :
                     {
@@ -63,6 +65,7 @@ module.exports = env => {
                         ENCRYPTION_KEY: '0123456789abcdefghiklmnopqrstuvx',
                         IV: '0123456789abcdef',
                         GATEWAY_PORT: '8099',
+                        COOKIE_PASSWORD: 'some-password-used-to-secure-the-admin-cookie',
                     }
             )
         ]

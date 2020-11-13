@@ -1,13 +1,11 @@
-import { rawMessageToGeoJson } from 'src/devices/gibiDevices';
-import { Positions } from 'src/mongoose/mongoose';
+import { Device } from 'src/api/device/device.model';
 
-export const processRawLocations = async (message: any, content: any, ackOrNack: Function) => {
-    console.log(message);
-    if (message.type === 'gibi') {
+export const processRawGeoJson = async (geoPoint: any, content: any, ackOrNack: Function) => {
+    console.log(geoPoint);
+    if (geoPoint.properties.featureType === 'gibiPosition') {
         try {
-            const point = rawMessageToGeoJson(message.data);
-            const position = new Positions({...point});
-            await position.save();
+            const deviceId = geoPoint.properties.deviceId;
+            const device = await Device.find({id: deviceId});
             // rabbitMQ.publish('processed', report);
         }
         catch (e) {

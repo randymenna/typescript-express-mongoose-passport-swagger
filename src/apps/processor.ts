@@ -3,7 +3,7 @@ import { RuntimeEnv } from 'src/config/RuntimeEnv';
 import { connectToMongo } from 'src/mongoose/mongoose';
 import { connectToRabbitMQ, rabbitMQ } from 'src/rabbitMQ';
 
-import { processRawLocations } from 'src/messageHandlers/positionAnalyzer/positionMessageHandler';
+import { processRawGeoJson } from 'src/messageHandlers/positionAnalyzer/positionMessageHandler';
 
 const PROCESSOR_WORKERS = 1;
 let restart = false;
@@ -19,7 +19,7 @@ const run = async () => {
             const connected = await connectToRabbitMQ();
             if (connected) {
                 console.log('***Starting', appName);
-                rabbitMQ.subscribe('raw', processRawLocations);
+                rabbitMQ.subscribe('raw', processRawGeoJson);
                 isRunning = true;
             } else {
                 console.error('Failed', appName);

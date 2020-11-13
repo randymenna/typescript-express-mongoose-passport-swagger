@@ -27,7 +27,7 @@ const LocationSchema: Schema = new Schema({
         },
         position: {
             type: Schema.Types.ObjectId,
-            ref: 'Position',
+            ref: 'Point',
             required: true,
         },
         valid: {
