@@ -15,7 +15,8 @@ const run = async () => {
         const server = new Express();
         await server.boot();
         server.app.listen(process.env.PORT, () => {
-            console.log('***', appName, 'listening on port:', process.env.PORT);
+            const message = `*** ${appName} listening on port: ${process.env.PORT}`;
+            console.log(message);
         });
         isRunning = true;
     } else {

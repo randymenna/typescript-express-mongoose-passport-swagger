@@ -9,6 +9,7 @@ import { GeoFenceRouter } from 'src/api/geoFence/geoFence.router';
 import { ItemRouter } from 'src/api/item/item.router';
 import { LocationRouter } from 'src/api/location/location.router';
 import { SubscriptionRouter } from 'src/api/subscription/subscription.router';
+import { baseApiUrl } from 'src/config/serverConfig';
 
 export default class Routes {
     public router: Router;
@@ -20,16 +21,15 @@ export default class Routes {
     }
 
     private setAllRoutes(router: any) {
-        const baseRoute = '/api/vi';
-        this.app.use(baseRoute, UserRouter);
-        this.app.use(baseRoute, AuthRouter);
-        this.app.use(baseRoute, ApiKeyRouter);
-        this.app.use(baseRoute, AccountRouter);
-        this.app.use(baseRoute, BillingRouter);
-        this.app.use(baseRoute, GeoFenceRouter);
-        this.app.use(baseRoute, ItemRouter);
-        this.app.use(baseRoute, LocationRouter);
-        this.app.use(baseRoute, SubscriptionRouter);
+        this.app.use(baseApiUrl, UserRouter);
+        this.app.use(baseApiUrl, AuthRouter);
+        this.app.use(baseApiUrl, ApiKeyRouter);
+        this.app.use(baseApiUrl, AccountRouter);
+        this.app.use(baseApiUrl, BillingRouter);
+        this.app.use(baseApiUrl, GeoFenceRouter);
+        this.app.use(baseApiUrl, ItemRouter);
+        this.app.use(baseApiUrl, LocationRouter);
+        this.app.use(baseApiUrl, SubscriptionRouter);
         this.app.use('/ws', WsRouterFn(router));
 
         this.setMainRoute();

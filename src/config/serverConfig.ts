@@ -11,3 +11,5 @@ export const corsOptions = {
     origin: allowedOrigins.local,
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
 };
+
+export const baseApiUrl = '/api/v1';

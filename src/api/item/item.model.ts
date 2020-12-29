@@ -1,34 +1,5 @@
 import { model, Schema } from 'mongoose';
 
-/**
- * @swagger
- *  components:
- *    schemas:
- *      Item:
- *        type: object
- *        required:
- *          - name
- *          - email
- *          - password
- *        optional:
- *          - isSuperItem
- *        properties:
- *          name:
- *            type: string
- *          email:
- *            type: string
- *            format: email
- *          password:
- *             type: string
- *             description: encrypted when stored in the database
- *          isSuperItem:
- *             type: boolean
- *        example:
- *           name: Barney Rubble
- *           email: barney@bedrock.com
- *           password: secretPassword
- */
-
 export enum ItemTypesEnum {
     DOG = 'dog',
     GOAT = 'goat',
@@ -80,9 +51,14 @@ const ItemSchema: Schema = new Schema({
             index: true,
         }],
         geoFences: [{
-            type: Schema.Types.ObjectId,
-            ref: 'GeoFence',
-            required: false,
+            fence: {
+                type: Schema.Types.ObjectId,
+                ref: 'GeoFence',
+            },
+            alert: {
+                type: Schema.Types.ObjectId,
+                ref: 'Alert',
+            },
         }],
     },
     {

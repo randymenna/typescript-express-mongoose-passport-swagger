@@ -1,4 +1,7 @@
-import { BrokerAsPromised } from 'rascal';
+// import { BrokerAsPromised } from 'rascal';
+
+// tslint:disable-next-line:no-var-requires
+const Rascal = require('rascal');
 
 export class RabbitMQ {
     _broker: any;
@@ -21,7 +24,16 @@ export class RabbitMQ {
     }
 
     public async connect() {
-        this._broker = await BrokerAsPromised.create(this._config.rascal);
+        try {
+            this._broker = await Rascal.BrokerAsPromised.create(Rascal.withDefaultConfig(this._config));
+        }
+        catch (e: any) {
+            console.log(e);
+            // tslint:disable-next-line:no-debugger
+            debugger;
+        }
+
+        // this._broker = await BrokerAsPromised.create(this._config.rascal);
         if (this._broker) {
             console.log('Connected to RabbitMQ');
         }
@@ -31,6 +43,10 @@ export class RabbitMQ {
         });
         this._broker.on('unblocked', ({vhost, connectionUrl}: { vhost: string, connectionUrl: string }) => {
             console.error(`Vhost: ${vhost} was unblocked using connection: ${connectionUrl}.`);
+        });
+        // @ts-ignore
+        this._broker.on('vhost_initialised', ({vhost, connectionUrl}) => {
+            console.log(`Vhost: ${vhost} was initialised using connection: ${connectionUrl}`);
         });
         return (this._broker != null);
     }

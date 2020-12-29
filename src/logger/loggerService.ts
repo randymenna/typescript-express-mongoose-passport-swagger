@@ -31,10 +31,10 @@ export const logger = createLogger({
 });
 
 export const initLog = () => {
-    console.log = (...args) => logger.info.call(logger, ...args);
-    console.info = (...args) => logger.info.call(logger, ...args);
-    console.warn = (...args) => logger.warn.call(logger, ...args);
-    console.error = (...args) => logger.error.call(logger, ...args);
-    console.debug = (...args) => logger.debug.call(logger, ...args);
+    console.log = (...args: any) => logger.info.call(logger, ...args);
+    console.info = (...args: any) => logger.info.call(logger, ...args);
+    console.warn = (...args: any) => logger.warn.call(logger, ...args);
+    console.error = (...args: any) => logger.error.call(logger, ...args);
+    console.debug = (...args: any) => logger.debug.call(logger, ...args);
 };
 

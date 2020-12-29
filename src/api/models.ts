@@ -7,10 +7,14 @@ import { Subscription } from 'src/api/subscription/subscription.model';
 import { Point } from 'src/api/point/point.model';
 import { User } from 'src/api/user/user.model';
 import { Device } from 'src/api/device/device.model';
+import { Contact } from 'src/api/contact/contact.model';
+import { Alert } from 'src/api/alert/alert.model';
 
 export const Models = [
     Account,
+    Alert,
     Billing,
+    Contact,
     Device,
     GeoFence,
     Item,
@@ -21,7 +25,9 @@ export const Models = [
 ];
 
 export const Accounts = Account;
+export const Alerts = Alert;
 export const Billings = Billing;
+export const Contacts = Contact;
 export const Devices = Device;
 export const GeoFences = GeoFence;
 export const Items = Item;

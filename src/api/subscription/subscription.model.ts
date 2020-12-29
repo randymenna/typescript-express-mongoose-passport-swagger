@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { ItemTypesEnum } from '../item/item.model';
 
 /**
  * @swagger
@@ -28,7 +27,7 @@ import { ItemTypesEnum } from '../item/item.model';
  */
 
 
-export enum ESubscriptionTypes {
+export enum SubscriptionTypesEnum {
     ONE_TIME = 'oneTime',
     DAILY = 'daily',
     MONTHLY = 'monthly',
@@ -38,7 +37,7 @@ export enum ESubscriptionTypes {
 
 const SubscriptionSchema: Schema = new Schema({
         type: [{
-            enum: Object.values(ItemTypesEnum),
+            enum: Object.values(SubscriptionTypesEnum),
         }],
         name: {
             type: String,

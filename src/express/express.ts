@@ -16,16 +16,7 @@ import { connectToMongo } from 'src/mongoose/mongoose';
 import { connectToRabbitMQ } from 'src/rabbitMQ';
 import errorMiddleware from 'src/middleware/errorHandler';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { dashBoardHandler } from 'src/dashboard/dashboardHandler';
-import { Models } from '../api/models';
-import { adminBroAuthenticate } from 'src/middleware/adminBroAuthenticate';
-
-// tslint:disable-next-line:no-var-requires
-const AdminBro = require('admin-bro');
-// tslint:disable-next-line:no-var-requires
-const AdminBroExpress = require('@admin-bro/express');
-// tslint:disable-next-line:no-var-requires
-const AdminBroMongoose = require('@admin-bro/mongoose');
+import { setAdminUI } from 'src/dashboard/adminBro';
 
 // tslint:disable-next-line:class-name
 class _Express {
@@ -53,8 +44,10 @@ class _Express {
         this.setStaticFiles();
         this.setRoutes();
         this.setDocumenation();
-        this.setAdminUI(db);
+        setAdminUI(db, this._app);
         this.setErrorMiddleware();
+        const cwd = process.cwd();
+        console.log(cwd);
     }
 
     private getExpress() {
@@ -77,6 +70,7 @@ class _Express {
 
     // tslint:disable-next-line:no-empty
     private setStaticFiles() {
+        this._app.use('/admin', express.static('public'));
     }
 
     /**
@@ -95,36 +89,6 @@ class _Express {
         this.expressWs = require('express-ws')(this._app);
         this._app = this.expressWs.app;
         this.router = express.Router();
-    }
-
-    private setAdminUI(db: any) {
-        try {
-            AdminBro.registerAdapter(AdminBroMongoose);
-
-            const dashboard = process.cwd() + '/src/dashboard/dashboard.tsx';
-            const adminBro = new AdminBro({
-                resources: [...Models],
-                rootPath: '/admin',
-                branding: {
-                    companyName: 'Newport Avenue Group',
-                },
-                dashboard: {
-                    component: AdminBro.bundle(dashboard),
-                    handler: dashBoardHandler,
-                },
-            });
-            const router = AdminBroExpress.buildAuthenticatedRouter(adminBro,
-                {
-                    authenticate: adminBroAuthenticate,
-                    cookiePassword: process.env.COOKIE_PASSWORD,
-                });
-            this._app.use(adminBro.options.rootPath, router);
-            console.log('admin interface available');
-        }
-        catch (e) {
-            console.error(e.message);
-            process.exit(1);
-        }
     }
 
     private setErrorMiddleware() {

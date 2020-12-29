@@ -11,19 +11,19 @@ export const rabbitConfig = {
                 // Define the vhost connection parameters. Specify multiple entries for clusters.
                 // Rascal will randomise the list, and cycle through the entries until it finds one that works
                 'connections': [{
-                    'url': 'amqp://localhost'
+                    'url': 'amqps://kbbbrvjd:MP0MMg-J1XjBIbTs44aaJBPZhbdRWrbM@shrimp.rmq.cloudamqp.com/kbbbrvjd'
                 },
-                    {
-                        'user': '***',
-                        'password': '***',
-                        'port': 5672,
-                        'options': {
-                            'heartbeat': 1
-                        },
-                        socketOptions: {
-                            timeout: 1000
-                        }
-                    }
+                    // {
+                    //     'user': 'kbbbrvjd',
+                    //     'password': 'MP0MMg-J1XjBIbTs44aaJBPZhbdRWrbM',
+                    //     'port': 5672,
+                    //     'options': {
+                    //         'heartbeat': 1
+                    //     },
+                    //     socketOptions: {
+                    //         timeout: 1000
+                    //     }
+                    // }
                 ],
 
                 // Define exchanges within the registration vhost

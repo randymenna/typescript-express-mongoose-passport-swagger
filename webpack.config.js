@@ -3,6 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack'); //to access built-in plugins
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = env => {
     return {
@@ -36,6 +37,11 @@ module.exports = env => {
                     ],
                     exclude: /node_modules/,
                 },
+                {
+                    test: /\.(png|jpg|gif|svg})$/,
+                    loader: 'file-loader',
+                    options: {name: '[name].[ext]?[hash]'}
+                }
             ],
         },
         externals: [nodeExternals()],
@@ -44,6 +50,14 @@ module.exports = env => {
             new CleanWebpackPlugin(),
             new webpack.ProgressPlugin(),
             new ForkTsCheckerWebpackPlugin(),
+            new CopyPlugin({
+                patterns: [
+                    {from: 'src/assets', to: 'public'},
+                ],
+                options: {
+                    concurrency: 100,
+                }
+            }),
             new webpack.EnvironmentPlugin(
                 (env.NODE_ENV === 'development') ?
                     {
