@@ -69,6 +69,8 @@ module.exports = env => {
                         IV: '0123456789abcdef',
                         GATEWAY_PORT: '8099',
                         COOKIE_PASSWORD: 'some-password-used-to-secure-the-admin-cookie',
+                        LOGO_URL: 'https://getgibi.com/wp-content/uploads/2016/04/Gibi-Logo-Puppy.png',
+                        COMPANY_NAME: 'Gibi Technologies',
                     }
                     :
                     {
@@ -80,6 +82,9 @@ module.exports = env => {
                         IV: '0123456789abcdef',
                         GATEWAY_PORT: '8099',
                         COOKIE_PASSWORD: 'some-password-used-to-secure-the-admin-cookie',
+                        LOGO_URL: 'https://getgibi.com/wp-content/uploads/2016/04/Gibi-Logo-Puppy.png',
+                        COMPANY_NAME: 'Gibi Technologies',
+                        RABBIT_MQ_URL: '',
                     }
             )
         ]
