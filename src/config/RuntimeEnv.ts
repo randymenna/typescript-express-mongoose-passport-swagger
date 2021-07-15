@@ -56,6 +56,14 @@ export class RuntimeEnv {
                 retVal = false;
             }
         }
+        if (!process.env.RABBIT_MQ_URL) {
+            console.error('RABBIT_MQ_URL not set');
+            retVal = false;
+        }
+        if (!process.env.COMPANY_NAME) {
+            console.error('COMPANY_NAME not set');
+            retVal = false;
+        }
         return retVal;
     };
 }

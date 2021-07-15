@@ -71,6 +71,7 @@ module.exports = env => {
                         COOKIE_PASSWORD: 'some-password-used-to-secure-the-admin-cookie',
                         LOGO_URL: 'https://getgibi.com/wp-content/uploads/2016/04/Gibi-Logo-Puppy.png',
                         COMPANY_NAME: 'Gibi Technologies',
+                        RABBIT_MQ_URL: 'amqps://kbbbrvjd:MP0MMg-J1XjBIbTs44aaJBPZhbdRWrbM@shrimp.rmq.cloudamqp.com/kbbbrvjd',
                     }
                     :
                     {

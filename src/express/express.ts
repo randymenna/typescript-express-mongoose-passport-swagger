@@ -45,6 +45,7 @@ class _Express {
         this.setRoutes();
         this.setDocumenation();
         setAdminUI(db, this._app);
+        this.setTimerDashboard();
         this.setErrorMiddleware();
         const cwd = process.cwd();
         console.log(cwd);
@@ -93,6 +94,15 @@ class _Express {
 
     private setErrorMiddleware() {
         this._app.use(errorMiddleware);
+    }
+
+    private setTimerDashboard() {
+        const Agenda = require('agenda');
+        const Agendash = require('agendash2');
+
+        const agenda = new Agenda({db: {address: process.env.MONGO_URI}});
+        // this._app.use('/timer', isAdmin, Agendash(agenda));
+        this._app.use('/timer', Agendash(agenda));
     }
 }
 

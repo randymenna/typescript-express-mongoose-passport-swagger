@@ -17,9 +17,9 @@ export const setAdminUI = (db: any, app: { use: (arg0: any, arg1: any) => void; 
             resources: [...Models],
             rootPath: '/admin',
             branding: {
-                logo: 'https://getgibi.com/wp-content/uploads/2016/04/Gibi-Logo-Puppy.png',
+                logo: process.env.LOGO_URL,
                 softwareBrothers: false,
-                companyName: 'Gibi Technologies',
+                companyName: process.env.COMPANY_NAME,
             },
             dashboard: {
                 handler: dashBoardHandler,

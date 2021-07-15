@@ -73,7 +73,13 @@ export class RabbitMQ {
 
     public async publish(toWhere: string, message: any) {
         try {
-            const publication = await this._broker.publish(toWhere, JSON.stringify(message));
+            let msg;
+            if (typeof message === 'string') {
+                msg = message;
+            } else {
+                msg = JSON.stringify(message);
+            }
+            const publication = await this._broker.publish(toWhere, msg);
             publication
                 .on('success', () => {
                     // confirmed

@@ -3,12 +3,13 @@ import net from 'net';
 import { RuntimeEnv } from 'src/config/RuntimeEnv';
 import { connectToMongo } from 'src/mongoose/mongoose';
 import { connectToRabbitMQ, rabbitMQ } from 'src/rabbitMQ';
-import { gibiMessageToGeoJson, isValidGibiCommand } from 'src/devices/gibi/gibiDevices';
+import { buildMessage, isGeoJson } from 'src/devices/gibi/gibiDevices';
 import { Point } from 'src/api/point/point.model';
 
 const GATEWAY_WORKERS = 1;
 const appName = (process.argv[1].split('/').pop()).split('.').shift();
 let restart = false;
+let db = null;
 
 const onConnect = (socket: any) => {
     const remoteAddress = socket.remoteAddress;
@@ -20,13 +21,22 @@ const onConnect = (socket: any) => {
 
     socket.on('data', async (data: any) => {
         try {
-            if (isValidGibiCommand(data)) {
-                const geoJson = gibiMessageToGeoJson(data);
-                let point = new Point({...geoJson});
-                point = await point.save();
-                rabbitMQ.publish('raw', point);
-            } else {
-                console.error('gateway(): Bad Data: ' + data);
+            console.log(data);
+            if (process.env.QUEUE_AT_GATEWAY) {
+                rabbitMQ.publish('raw', data);
+            }
+            if (process.env.PERSIST_AT_GATEWAY) {
+                let gibiMessage = buildMessage(data);
+                if (gibiMessage) {
+                    if (isGeoJson(gibiMessage)) {
+                        // save to mongo
+                        const doc = await Point.create(gibiMessage);
+                        gibiMessage = doc.toObject();
+                    }
+                    rabbitMQ.publish('process', gibiMessage);
+                } else {
+                    console.error('gateway(): Bad Data: ' + data);
+                }
             }
         }
         catch (e) {
@@ -58,7 +68,7 @@ const run = async () => {
     RuntimeEnv.setEnv();
     if (RuntimeEnv.checkEnvironment()) {
         try {
-            const db = await connectToMongo();
+            db = await connectToMongo();
             const connected = await connectToRabbitMQ();
             if (connected) {
                 console.log('***Starting', appName);

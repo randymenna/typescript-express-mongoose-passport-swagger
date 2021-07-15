@@ -1,4 +1,4 @@
-import { gibiMessageToGeoJson } from './gibiDevices';
+import { buildMessage } from './gibiDevices';
 import { expect } from 'chai';
 import 'mocha';
 
@@ -32,8 +32,7 @@ const geoJsonPoint = {
 
 describe('Parse gibi device location mesage', () => {
     it('should return a geoJson point', () => {
-        const result = gibiMessageToGeoJson(gibiMessage);
-        delete result.properties.receivedTime;
+        const result = buildMessage(gibiMessage);
         expect(JSON.stringify(result)).to.equal(JSON.stringify(geoJsonPoint));
     });
 
